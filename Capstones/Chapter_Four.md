@@ -25,13 +25,8 @@ from IPython.display import clear_output
 fred_data = fq.FredReader()
 massive_data = fq.MASSIVEReader(calls_per_minute=5)
 ```
-
-# 
-
-# ---
-
-# 
-
+---
+ 
 # ***Step 1***
 
 ## ***Get Eligible Bonds***
@@ -47,7 +42,6 @@ df_eligible.index = pd.to_datetime(df_eligible.index, format='%m/%d/%y')
 # Preview the official conversion factors
 display(df_eligible.head())
 ```
-
 ## 
 
 ## ***Get FEDInvest Data***
@@ -66,7 +60,6 @@ display(f'Date of prices {stamp}  Settlement date  {settlement}')
 clean_df=fq.clean_FEDInvest(df)
 display(clean_df.head())
 ```
-
 ## 
 
 ## ***Check for Missing Bonds***
@@ -121,7 +114,6 @@ df_combined = pd.merge(
 # 5. Set index back and sort
 df_combined = df_combined.set_index('Maturity').sort_values(by=['Maturity', 'Coupon'])
 ```
-
 ## 
 
 ## ***Clean up the Data***
@@ -144,17 +136,9 @@ false_value = df_ctd[['END OF DAY', 'Price Bid', 'Price Ask']].max(axis=1)
 df_ctd['Clean Price'] = np.where(bid_ask_true, true_value, false_value)
 ```
 
-# 
-
-# 
-
 # ---
 
-# 
-
 # ***Step 2***
-
-## 
 
 ## ***Access SOFR***
 
@@ -168,8 +152,6 @@ sofr_rate=float(sofr[0])
 sofr_rate=sofr_rate/100
 
 ```
-
-## 
 
 ## ***\`timing\_option\`***
 
@@ -226,8 +208,6 @@ def timing_option(settlement, maturity, coupon, clean_price, sofr_rate, freq=2):
    return accrued_interest, dirty_price, daily_accrual, daily_sofr_cost, next_date
 
 ```
-
-## 
 
 ## ***Calculate Values***
 
@@ -297,7 +277,6 @@ df_clean_ctd = df_ctd.drop(columns=['Price Bid', 'Price Ask', 'END OF DAY']).cop
 display(df_clean_ctd[['Clean Price', 'Next_Coupon_Date', 'Invoice_First', 'Invoice_Last']].head())
 
 ```
-
 ---
 
 # ***Step 3***
@@ -329,7 +308,6 @@ df_clean_ctd['Forward_Last'] = np.where(
 display(df_clean_ctd[['Clean Price', 'Spot_Dirty','Daily_Cost', 'Forward_First', 'Forward_Last']].head())
 
 ```
-
 ---
 
 # ***Step 4***
